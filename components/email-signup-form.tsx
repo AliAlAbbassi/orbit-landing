@@ -29,10 +29,12 @@ export function EmailSignupForm() {
   });
 
   const onSubmit = async (data: FormData) => {
+    console.log('Form submitted with data:', data);
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
 
     try {
+      console.log('Making API request to /api/subscribe');
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
@@ -44,7 +46,9 @@ export function EmailSignupForm() {
         }),
       });
 
+      console.log('Response received:', response.status, response.ok);
       const result = await response.json();
+      console.log('Response data:', result);
 
       if (response.ok) {
         setSubmitStatus({
@@ -64,18 +68,23 @@ export function EmailSignupForm() {
         });
       }
     } catch (error) {
+      console.error('Form submission error:', error);
       setSubmitStatus({
         type: "error",
         message: "Network error. Please check your connection and try again.",
       });
     } finally {
+      console.log('Form submission complete, setting isSubmitting to false');
       setIsSubmitting(false);
     }
   };
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={(e) => {
+        console.log('Form submit event triggered');
+        handleSubmit(onSubmit)(e);
+      }} className="space-y-4">
         <div className="relative">
           <div className="flex gap-2">
             <div className="relative flex-1">

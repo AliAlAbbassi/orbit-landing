@@ -14,21 +14,34 @@ if (!getApps().length) {
     ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY)
     : null;
 
-  if (serviceAccount) {
-    initializeApp({
-      credential: cert(serviceAccount),
-      projectId: process.env.FIREBASE_PROJECT_ID,
-    });
+  if (!serviceAccount) {
+    console.error('Firebase service account not found in environment variables');
+    throw new Error('Firebase configuration missing');
   }
+
+  if (!process.env.FIREBASE_PROJECT_ID) {
+    console.error('Firebase project ID not found in environment variables');
+    throw new Error('Firebase project ID missing');
+  }
+
+  console.log('Initializing Firebase with project ID:', process.env.FIREBASE_PROJECT_ID);
+
+  initializeApp({
+    credential: cert(serviceAccount),
+    projectId: process.env.FIREBASE_PROJECT_ID,
+  });
 }
 
 const db = getFirestore();
 
 export async function POST(request: Request) {
   try {
+    console.log('API endpoint called');
     const body = await request.json();
+    console.log('Request body received:', { email: body.email, source: body.source });
 
     const validatedData = emailSchema.parse(body);
+    console.log('Data validated successfully');
 
     const subscriberData = {
       email: validatedData.email.toLowerCase(),
@@ -41,6 +54,7 @@ export async function POST(request: Request) {
       userAgent: request.headers.get('user-agent') || 'unknown',
     };
 
+    console.log('Checking for existing subscriber...');
     const existingSubscriber = await db
       .collection('email_subscribers')
       .where('email', '==', subscriberData.email)
@@ -48,13 +62,16 @@ export async function POST(request: Request) {
       .get();
 
     if (!existingSubscriber.empty) {
+      console.log('Email already exists:', subscriberData.email);
       return NextResponse.json(
         { message: 'Email already subscribed' },
         { status: 409 }
       );
     }
 
-    await db.collection('email_subscribers').add(subscriberData);
+    console.log('Adding new subscriber to Firestore...');
+    const docRef = await db.collection('email_subscribers').add(subscriberData);
+    console.log('Successfully added subscriber with ID:', docRef.id);
 
     return NextResponse.json(
       { message: 'Successfully subscribed!', email: subscriberData.email },
@@ -62,6 +79,7 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.error('Validation error:', error.issues);
       return NextResponse.json(
         { message: 'Invalid email format', errors: error.issues },
         { status: 400 }
@@ -69,6 +87,12 @@ export async function POST(request: Request) {
     }
 
     console.error('Subscription error:', error);
+    console.error('Error details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace'
+    });
+
     return NextResponse.json(
       { message: 'Failed to subscribe. Please try again.' },
       { status: 500 }
