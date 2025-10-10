@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useRef, useEffect, useState } from 'react';
 
 // Types for component props
@@ -315,6 +316,7 @@ void main(){gl_Position=position;}`;
         rendererRef.current.reset();
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return canvasRef;
