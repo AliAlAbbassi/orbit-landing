@@ -422,15 +422,6 @@ const Hero: React.FC<HeroProps> = ({
         )}
 
         <div className="text-center space-y-6 max-w-5xl mx-auto px-4">
-          {/* Logo with Animation */}
-          <div className="flex justify-center animate-fade-in-up">
-            <img
-              src="/orbit-wireframe-trans-400x400.svg"
-              alt="Orbit Logo"
-              className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40"
-            />
-          </div>
-
           {/* Main Heading with Animation */}
           <div className="space-y-2">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
