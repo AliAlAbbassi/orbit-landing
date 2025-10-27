@@ -97,19 +97,21 @@ export function EmailSignupForm() {
                 disabled={isSubmitting}
               />
             </div>
+          </div>
+          <div className="flex justify-center mt-6">
             <button
               type="submit"
               disabled={isSubmitting}
               className="px-8 py-3 bg-gradient-to-r from-orange-400 to-yellow-400 text-white font-semibold rounded-lg hover:from-orange-500 hover:to-yellow-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Join Waitlist
-                </>
-              ) : (
-                "Join Waitlist"
-              )}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Join Waitlist
+              </>
+            ) : (
+              "Join Waitlist"
+            )}
             </button>
           </div>
           {errors.email && (
@@ -122,11 +124,10 @@ export function EmailSignupForm() {
 
         {submitStatus.type && (
           <div
-            className={`p-4 rounded-lg flex items-start gap-3 animate-in fade-in-0 slide-in-from-top-2 ${
-              submitStatus.type === "success"
+            className={`p-4 rounded-lg flex items-start gap-3 animate-in fade-in-0 slide-in-from-top-2 ${submitStatus.type === "success"
                 ? "bg-green-500/10 border border-green-500/20 text-green-400"
                 : "bg-red-500/10 border border-red-500/20 text-red-400"
-            }`}
+              }`}
           >
             {submitStatus.type === "success" ? (
               <CheckCircle2 className="h-5 w-5 mt-0.5 shrink-0" />
