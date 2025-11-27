@@ -79,6 +79,20 @@ export function EmailSignupForm() {
     }
   };
 
+  if (submitStatus.type === "success") {
+    return (
+      <div className="w-full max-w-md mx-auto">
+        <div className="p-6 rounded-lg flex flex-col items-center gap-4 animate-in fade-in-0 slide-in-from-bottom-4 bg-green-500/10 border border-green-500/20 text-green-400">
+          <CheckCircle2 className="h-12 w-12" />
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-white mb-2">You're on the list!</h3>
+            <p className="text-sm text-gray-300">{submitStatus.message}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-md mx-auto">
       <form onSubmit={(e) => {
@@ -122,18 +136,9 @@ export function EmailSignupForm() {
           )}
         </div>
 
-        {submitStatus.type && (
-          <div
-            className={`p-4 rounded-lg flex items-start gap-3 animate-in fade-in-0 slide-in-from-top-2 ${submitStatus.type === "success"
-                ? "bg-green-500/10 border border-green-500/20 text-green-400"
-                : "bg-red-500/10 border border-red-500/20 text-red-400"
-              }`}
-          >
-            {submitStatus.type === "success" ? (
-              <CheckCircle2 className="h-5 w-5 mt-0.5 shrink-0" />
-            ) : (
-              <AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
-            )}
+        {submitStatus.type === "error" && (
+          <div className="p-4 rounded-lg flex items-start gap-3 animate-in fade-in-0 slide-in-from-top-2 bg-red-500/10 border border-red-500/20 text-red-400">
+            <AlertCircle className="h-5 w-5 mt-0.5 shrink-0" />
             <p className="text-sm">{submitStatus.message}</p>
           </div>
         )}
