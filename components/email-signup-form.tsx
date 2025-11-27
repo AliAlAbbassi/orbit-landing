@@ -85,7 +85,7 @@ export function EmailSignupForm() {
         <div className="p-6 rounded-lg flex flex-col items-center gap-4 animate-in fade-in-0 slide-in-from-bottom-4 bg-green-500/10 border border-green-500/20 text-green-400">
           <CheckCircle2 className="h-12 w-12" />
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-white mb-2">You're on the list!</h3>
+            <h3 className="text-lg font-semibold text-white mb-2">You&apos;re on the list!</h3>
             <p className="text-sm text-gray-300">{submitStatus.message}</p>
           </div>
         </div>
