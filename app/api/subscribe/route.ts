@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { sendConfirmationEmail } from '@/lib/email';
 
 const emailSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -72,6 +73,15 @@ export async function POST(request: Request) {
     console.log('Adding new subscriber to Firestore...');
     const docRef = await db.collection('email_subscribers').add(subscriberData);
     console.log('Successfully added subscriber with ID:', docRef.id);
+
+    // Send confirmation email (non-blocking - we don't fail the subscription if email fails)
+    try {
+      await sendConfirmationEmail({ to: subscriberData.email });
+      console.log('Confirmation email sent to:', subscriberData.email);
+    } catch (emailError) {
+      console.error('Failed to send confirmation email:', emailError);
+      // Continue anyway - subscription was successful
+    }
 
     return NextResponse.json(
       { message: 'Successfully subscribed!', email: subscriberData.email },
