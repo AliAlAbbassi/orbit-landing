@@ -49,6 +49,7 @@ function getConfirmationEmailHtml(): string {
               <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                 <tr>
                   <td align="center" style="padding-bottom: 32px;">
+                    <img src="${process.env.NEXT_PUBLIC_SITE_URL || 'https://hoopaudio.com'}/icon.svg" alt="Orbit" width="64" height="64" style="display: block; margin: 0 auto 16px auto;" />
                     <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">
                       Orbit
                     </h1>
