@@ -10,7 +10,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "broadcast": "tsx scripts/send-broadcast.ts"
+    "broadcast": "tsx scripts/send-broadcast.ts",
+    "send-welcome": "tsx scripts/send-welcome-to-all.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
